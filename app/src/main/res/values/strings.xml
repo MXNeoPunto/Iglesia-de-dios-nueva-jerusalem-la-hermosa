@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Nueva Jerusalem</string>
+    <string name="settings">Ajustes</string>
+    <string name="play">Reproducir</string>
+    <string name="pause">Pausar</string>
+    <string name="now_playing">Reproduciendo ahora</string>
+    <string name="loading">Cargando...</string>
+    <string name="error">Error de reproducción</string>
+    <string name="language">Idioma</string>
+    <string name="theme">Tema</string>
+    <string name="dark_mode">Modo Oscuro</string>
+    <string name="light_mode">Modo Claro</string>
+    <string name="system_default">Predeterminado del sistema</string>
+    <string name="language_disclaimer">Advertencia: el idioma únicamente cambia el texto visual de la aplicación, esto no implica que la emisora cambie.</string>
+</resources>

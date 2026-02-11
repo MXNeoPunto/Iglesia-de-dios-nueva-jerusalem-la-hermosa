@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Nueva Jerusalem</string>
+    <string name="settings">Settings</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Playback Error</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_default">System Default</string>
+    <string name="language_disclaimer">Warning: the language only changes the visual text of the application, this does not imply that the station changes.</string>
+</resources>
