@@ -1,0 +1,1 @@
+-keep class iglesia.jerusalem.hermosa.** { *; }
