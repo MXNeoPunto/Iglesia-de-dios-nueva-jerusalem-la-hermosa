@@ -24,4 +24,10 @@
     <string name="minutes_60">60 Minutos</string>
     <string name="cancel">Cancelar</string>
     <string name="about_text">Iglesia de dios nueva jerusalem la hermosa hechos 3;2 barrio la estancia salamá baja verapaz Guatemala\n\nDesarrollado por Andrés Turcios y su equipo NeoPunto correo ventas@neopunto.com</string>
+    <string name="eq_normal">Normal</string>
+    <string name="eq_voice">Modo Voz</string>
+    <string name="eq_praise">Modo Alabanzas</string>
+    <string name="eq_worship">Modo Adoración</string>
+    <string name="contact">Contactar</string>
+    <string name="equalizer_mode">Modo Ecualizador</string>
 </resources>
