@@ -200,12 +200,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openEqualizer() {
-        Intent intent = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-             startActivityForResult(intent, 0);
-        } else {
-            Toast.makeText(this, "No Equalizer found", Toast.LENGTH_SHORT).show();
-        }
+        String[] options = {
+            getString(R.string.eq_normal),
+            getString(R.string.eq_voice),
+            getString(R.string.eq_praise),
+            getString(R.string.eq_worship)
+        };
+
+        SharedPreferences prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        int currentMode = prefs.getInt("equalizer_mode", 0);
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.equalizer_mode)
+            .setSingleChoiceItems(options, currentMode, (dialog, which) -> {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("equalizer_mode", which);
+                editor.apply();
+                dialog.dismiss();
+                Toast.makeText(this, options[which], Toast.LENGTH_SHORT).show();
+            })
+            .setNegativeButton(R.string.cancel, null)
+            .show();
     }
 
     private void showSleepTimerDialog() {
@@ -216,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
             getString(R.string.cancel)
         };
 
-        new AlertDialog.Builder(this)
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle(R.string.sleep_timer)
             .setItems(options, (dialog, which) -> {
                 if (which == 0) startTimer(15);
@@ -260,10 +275,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAboutDialog() {
-        new AlertDialog.Builder(this)
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
             .setTitle(R.string.about)
             .setMessage(R.string.about_text)
             .setPositiveButton(android.R.string.ok, null)
+            .setNeutralButton(R.string.contact, (dialog, which) -> {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(android.net.Uri.parse("mailto:ventas@neopunto.com"));
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(this, "No email app found", Toast.LENGTH_SHORT).show();
+                }
+            })
             .show();
     }
 }

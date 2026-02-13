@@ -23,6 +23,9 @@ public class RadioService extends MediaLibraryService {
 
     private MediaLibrarySession mediaLibrarySession;
     private ExoPlayer player;
+    private android.media.audiofx.Equalizer equalizer;
+    private android.content.SharedPreferences.OnSharedPreferenceChangeListener prefsListener;
+    private static final String PREF_EQ_MODE = "equalizer_mode";
 
     @Override
     public void onCreate() {
@@ -51,6 +54,24 @@ public class RadioService extends MediaLibraryService {
         mediaLibrarySession = new MediaLibrarySession.Builder(this, player, new CustomMediaLibrarySessionCallback())
                 .setSessionActivity(pendingIntent)
                 .build();
+
+        android.content.SharedPreferences prefs = getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE);
+        prefsListener = (sharedPreferences, key) -> {
+            if (PREF_EQ_MODE.equals(key)) {
+                int mode = sharedPreferences.getInt(PREF_EQ_MODE, 0);
+                applyEqualizerMode(mode);
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefsListener);
+
+        player.addListener(new Player.Listener() {
+            @Override
+            public void onAudioSessionIdChanged(int audioSessionId) {
+                if (audioSessionId != androidx.media3.common.C.AUDIO_SESSION_ID_UNSET) {
+                    initializeEqualizer(audioSessionId);
+                }
+            }
+        });
     }
 
     @Override
@@ -62,6 +83,14 @@ public class RadioService extends MediaLibraryService {
 
     @Override
     public void onDestroy() {
+        if (prefsListener != null) {
+            android.content.SharedPreferences prefs = getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE);
+            prefs.unregisterOnSharedPreferenceChangeListener(prefsListener);
+        }
+        if (equalizer != null) {
+            equalizer.release();
+            equalizer = null;
+        }
         if (mediaLibrarySession != null) {
             mediaLibrarySession.release();
             mediaLibrarySession = null;
@@ -77,6 +106,68 @@ public class RadioService extends MediaLibraryService {
     @Override
     public MediaLibrarySession onGetSession(MediaSession.ControllerInfo controllerInfo) {
         return mediaLibrarySession;
+    }
+
+    private void initializeEqualizer(int audioSessionId) {
+        if (equalizer != null) {
+            equalizer.release();
+        }
+        try {
+            equalizer = new android.media.audiofx.Equalizer(0, audioSessionId);
+            equalizer.setEnabled(true);
+
+            android.content.SharedPreferences prefs = getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE);
+            int mode = prefs.getInt(PREF_EQ_MODE, 0);
+            applyEqualizerMode(mode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void applyEqualizerMode(int mode) {
+        if (equalizer == null) return;
+
+        try {
+            short bands = equalizer.getNumberOfBands();
+            short[] range = equalizer.getBandLevelRange();
+            short minEQ = range[0];
+            short maxEQ = range[1];
+
+            for (short i = 0; i < bands; i++) {
+                int centerFreq = equalizer.getCenterFreq(i) / 1000; // Hz
+                short level = 0;
+
+                int bandFreq = equalizer.getCenterFreq(i) / 1000;
+
+                switch (mode) {
+                    case 0: // Normal
+                        level = 0;
+                        break;
+                    case 1: // Voz (Voice) - Boost Mids (400Hz - 3kHz)
+                        if (bandFreq >= 400 && bandFreq <= 3000) {
+                            level = (short) (maxEQ * 0.5);
+                        }
+                        break;
+                    case 2: // Alabanzas (Praise) - Boost Bass (< 200Hz)
+                        if (bandFreq < 200) {
+                            level = (short) (maxEQ * 0.6);
+                        }
+                        break;
+                    case 3: // Adoración (Worship) - V-Shape
+                        if (bandFreq < 100) {
+                            level = (short) (maxEQ * 0.4);
+                        } else if (bandFreq > 4000) {
+                            level = (short) (maxEQ * 0.4);
+                        } else if (bandFreq >= 500 && bandFreq <= 2000) {
+                            level = (short) (minEQ * 0.2); // Slight cut
+                        }
+                        break;
+                }
+                equalizer.setBandLevel(i, level);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class CustomMediaLibrarySessionCallback implements MediaLibrarySession.Callback {
