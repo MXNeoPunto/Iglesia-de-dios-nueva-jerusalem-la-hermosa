@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView statusText;
     private TextView timerText;
     private ImageView logoImage;
+    private WaveView waveView;
     private ListenableFuture<MediaController> controllerFuture;
     private CountDownTimer sleepTimer;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         statusText = findViewById(R.id.status_text);
         timerText = findViewById(R.id.timer_text);
         logoImage = findViewById(R.id.logo_image);
+        waveView = findViewById(R.id.wave_view);
 
         playPauseButton.setOnClickListener(v -> {
             animateButton(v);
@@ -155,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startAnim() {
+        if (waveView != null) {
+            waveView.startAnimation();
+        }
         if (logoImage.getAnimation() == null) {
             ScaleAnimation anim = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
                     Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -166,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopAnim() {
+        if (waveView != null) {
+            waveView.stopAnimation();
+        }
         logoImage.clearAnimation();
     }
 
