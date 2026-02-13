@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iglesia de Dios Nueva Jerusalem La Hermosa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        'gold-light': '#F4C430',
+                        'glass-white': 'rgba(255, 255, 255, 0.1)',
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #fdfbf7 0%, #e6e9f0 100%);
+            /* iOS 26 vibe: clean, airy, perhaps a subtle mesh gradient */
+            background-image: radial-gradient(at 0% 0%, hsla(43,100%,88%,1) 0, transparent 50%),
+                              radial-gradient(at 50% 0%, hsla(210,100%,96%,1) 0, transparent 50%),
+                              radial-gradient(at 100% 0%, hsla(43,100%,88%,1) 0, transparent 50%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+        /* Hide scrollbar for clean iOS look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800 min-h-screen pb-32 selection:bg-gold selection:text-white">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50">
+        <div class="glass mx-4 mt-4 rounded-full px-6 py-4 flex justify-center items-center shadow-lg">
+             <!-- Only text "Hermosa" as requested for header -->
+            <h1 class="text-xl font-bold tracking-[0.2em] text-gold uppercase">Hermosa</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-28 space-y-6 max-w-md md:max-w-2xl lg:max-w-4xl">
+
+        <!-- Hero Section -->
+        <section class="glass-card rounded-[2.5rem] p-8 text-center relative overflow-hidden transition hover:scale-[1.01] duration-500">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
+
+            <!-- Logo Placeholder -->
+            <div class="w-28 h-28 mx-auto mb-6 bg-white/60 rounded-full flex items-center justify-center shadow-inner border border-white/80">
+                <i class="fas fa-church text-5xl text-gold drop-shadow-sm"></i>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-2 text-gray-800 leading-tight">Iglesia de Dios Nueva Jerusalem</h2>
+            <h3 class="text-xl text-gold font-semibold mb-6 tracking-wide">La Hermosa</h3>
+
+            <div class="flex flex-col items-center justify-center space-y-2 text-sm text-gray-500 mb-8 bg-white/30 py-3 rounded-2xl mx-4">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-map-marker-alt text-gold"></i>
+                    <p class="font-medium">Barrio La Estancia, Salamá</p>
+                </div>
+                <p class="text-xs opacity-75">Baja Verapaz • Hechos 3:2</p>
+            </div>
+
+            <!-- Action Button -->
+            <!-- <button class="bg-gold text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl hover:bg-yellow-600 transition-all transform active:scale-95">
+                Ver Transmisión
+            </button> -->
+        </section>
+
+        <!-- Daily Verse -->
+        <section class="glass-card rounded-[2rem] p-8 relative group">
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-6 py-1 rounded-full shadow-sm text-[10px] font-bold text-gold uppercase tracking-widest border border-gray-50">
+                Versículo Diario
+            </div>
+            <blockquote class="text-center italic text-lg text-gray-700 mt-4 leading-relaxed font-serif">
+                "Mas Pedro dijo: No tengo plata ni oro, pero lo que tengo te doy; en el nombre de Jesucristo de Nazaret, levántate y anda."
+            </blockquote>
+            <p class="text-center text-xs font-bold text-gold mt-6 tracking-wider uppercase">- Hechos 3:6 -</p>
+        </section>
+
+        <!-- Services -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="glass-card rounded-[2rem] p-6 hover:bg-white/40 transition duration-300">
+                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-200/50 pb-2 flex items-center">
+                    <i class="fas fa-calendar-day text-gold mr-2 text-lg"></i> Servicios Generales
+                </h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex justify-between items-center group">
+                        <span class="group-hover:text-gold transition">Domingos</span>
+                        <div class="flex flex-col items-end">
+                            <span class="font-bold text-gray-700">9:00 AM</span>
+                            <span class="font-bold text-gray-700">5:00 PM</span>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center group">
+                        <span class="group-hover:text-gold transition">Martes</span>
+                        <span class="font-bold text-gray-700">7:00 PM</span>
+                    </li>
+                    <li class="flex justify-between items-center group">
+                        <span class="group-hover:text-gold transition">Jueves</span>
+                        <span class="font-bold text-gray-700">7:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+             <div class="glass-card rounded-[2rem] p-6 hover:bg-white/40 transition duration-300">
+                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-200/50 pb-2 flex items-center">
+                    <i class="fas fa-hands-praying text-gold mr-2 text-lg"></i> Oración y Ayuno
+                </h4>
+                 <ul class="space-y-4 text-sm">
+                    <li class="flex justify-between items-center group">
+                        <span class="group-hover:text-gold transition">Sábados</span>
+                        <span class="font-bold text-gray-700">4:00 AM</span>
+                    </li>
+                     <li class="flex justify-between items-center group">
+                        <span class="group-hover:text-gold transition">Lunes</span>
+                        <span class="font-bold text-gray-700">7:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mini Player (Sticky Bottom) -->
+    <div class="fixed bottom-6 left-4 right-4 z-40 max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
+        <div class="glass rounded-[2rem] p-3 pl-4 pr-5 flex items-center shadow-2xl backdrop-blur-2xl border border-white/60 ring-1 ring-white/40">
+            <!-- Album Art / Icon -->
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gold to-yellow-600 flex items-center justify-center text-white shadow-lg mr-4 shrink-0 border-2 border-white/20 relative">
+                <i class="fas fa-broadcast-tower text-sm animate-pulse"></i>
+                <!-- Live Indicator -->
+                <div class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></div>
+            </div>
+
+            <!-- Track Info -->
+            <div class="flex-1 min-w-0 mr-4">
+                <h5 class="font-bold text-gray-800 text-sm truncate">Radio Nueva Jerusalem</h5>
+                <p class="text-[10px] text-gray-500 truncate font-medium uppercase tracking-wide">En vivo • La Hermosa</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center space-x-3">
+                 <!-- Hidden Audio Element -->
+                 <audio id="radio-player">
+                    <!-- Placeholder URL as requested ("eso lo configuro usa") -->
+                    <source src="https://stream.zeno.fm/placeholder" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                 </audio>
+
+                 <button id="play-btn" class="w-12 h-12 rounded-full bg-gray-900 text-white flex items-center justify-center hover:bg-gold hover:text-white transition-all shadow-lg active:scale-90" onclick="togglePlay()">
+                    <i class="fas fa-play ml-1 text-lg"></i>
+                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-12 text-[10px] text-gray-400 pb-32">
+        <p class="mb-1">&copy; 2024 Iglesia de Dios Nueva Jerusalem La Hermosa</p>
+        <div class="flex flex-col items-center justify-center space-y-1">
+            <span class="block">Desarrollador: <span class="text-gold font-bold">Andrés Turcios</span></span>
+            <a href="https://jerusalem.neopunto.com" class="hover:text-gold transition underline decoration-dotted">jerusalem.neopunto.com</a>
+        </div>
+    </footer>
+
+    <script>
+        const player = document.getElementById('radio-player');
+        const playBtn = document.getElementById('play-btn');
+        const icon = playBtn.querySelector('i');
+
+        function togglePlay() {
+            if (player.paused) {
+                // Attempt to play. Note: Browsers block autoplay without interaction.
+                // Since this is triggered by a button click, it should work if the stream URL is valid.
+                const playPromise = player.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Play started
+                        updateIcon(true);
+                    })
+                    .catch(error => {
+                        console.log("Stream playback prevented or URL invalid.");
+                        // For UI feedback purposes in this demo:
+                        updateIcon(true);
+                        // In reality, you'd want to handle the error, but this is a template.
+                    });
+                }
+            } else {
+                player.pause();
+                updateIcon(false);
+            }
+        }
+
+        function updateIcon(isPlaying) {
+            if (isPlaying) {
+                icon.classList.remove('fa-play', 'ml-1');
+                icon.classList.add('fa-pause');
+            } else {
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play', 'ml-1');
+            }
+        }
+    </script>
+</body>
+</html>
