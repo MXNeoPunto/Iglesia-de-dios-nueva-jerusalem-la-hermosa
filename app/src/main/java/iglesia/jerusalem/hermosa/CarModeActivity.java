@@ -24,7 +24,6 @@ public class CarModeActivity extends AppCompatActivity {
 
     private MediaController mediaController;
     private ExtendedFloatingActionButton playPauseButton;
-    private FloatingActionButton skipButton;
     private TextView statusText;
     private ListenableFuture<MediaController> controllerFuture;
 
@@ -34,8 +33,13 @@ public class CarModeActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_car_mode);
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         playPauseButton = findViewById(R.id.play_pause_button);
-        skipButton = findViewById(R.id.skip_button);
         statusText = findViewById(R.id.status_text);
 
         findViewById(R.id.close_button).setOnClickListener(v -> finish());
@@ -50,15 +54,6 @@ public class CarModeActivity extends AppCompatActivity {
                 }
             } else {
                 initializeController();
-            }
-        });
-
-        skipButton.setOnClickListener(v -> {
-            animateButton(v);
-            if (mediaController != null) {
-                mediaController.stop();
-                mediaController.prepare();
-                mediaController.play();
             }
         });
     }

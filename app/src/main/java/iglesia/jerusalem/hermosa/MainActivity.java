@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaController mediaController;
     private ExtendedFloatingActionButton playPauseButton;
-    private FloatingActionButton skipButton;
     private TextView statusText;
+    private TextView timerText;
     private ImageView logoImage;
     private ListenableFuture<MediaController> controllerFuture;
     private CountDownTimer sleepTimer;
@@ -52,12 +52,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_root), (v, insets) -> {
+            androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
 
         playPauseButton = findViewById(R.id.play_pause_button);
-        skipButton = findViewById(R.id.skip_button);
         statusText = findViewById(R.id.status_text);
+        timerText = findViewById(R.id.timer_text);
         logoImage = findViewById(R.id.logo_image);
 
         playPauseButton.setOnClickListener(v -> {
@@ -70,15 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                  initializeController();
-            }
-        });
-
-        skipButton.setOnClickListener(v -> {
-            animateButton(v);
-            if (mediaController != null) {
-                mediaController.stop();
-                mediaController.prepare();
-                mediaController.play();
             }
         });
     }
@@ -233,14 +230,21 @@ public class MainActivity extends AppCompatActivity {
     private void startTimer(int minutes) {
         if (sleepTimer != null) sleepTimer.cancel();
         long millis = minutes * 60 * 1000L;
+        timerText.setVisibility(View.VISIBLE);
+
         sleepTimer = new CountDownTimer(millis, 1000) {
             @Override
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+                long minutes = (millisUntilFinished / 1000) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                timerText.setText(String.format(java.util.Locale.getDefault(), "%02d:%02d", minutes, seconds));
+            }
 
             @Override
             public void onFinish() {
                 if (mediaController != null) mediaController.pause();
                 sleepTimer = null;
+                timerText.setVisibility(View.GONE);
             }
         }.start();
         Toast.makeText(this, String.format(getString(R.string.sleep_timer_set), minutes), Toast.LENGTH_SHORT).show();
@@ -250,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
         if (sleepTimer != null) {
             sleepTimer.cancel();
             sleepTimer = null;
+            timerText.setVisibility(View.GONE);
             Toast.makeText(this, R.string.sleep_timer_cancelled, Toast.LENGTH_SHORT).show();
         }
     }
