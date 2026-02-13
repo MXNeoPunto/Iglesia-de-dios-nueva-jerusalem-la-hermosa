@@ -12,4 +12,16 @@
     <string name="light_mode">Modo Claro</string>
     <string name="system_default">Predeterminado del sistema</string>
     <string name="language_disclaimer">Advertencia: el idioma únicamente cambia el texto visual de la aplicación, esto no implica que la emisora cambie.</string>
+    <string name="car_mode">Modo Coche</string>
+    <string name="sleep_timer">Temporizador</string>
+    <string name="equalizer">Ecualizador</string>
+    <string name="about">Acerca de</string>
+    <string name="skip">Siguiente</string>
+    <string name="sleep_timer_set">Temporizador configurado para %d minutos</string>
+    <string name="sleep_timer_cancelled">Temporizador cancelado</string>
+    <string name="minutes_15">15 Minutos</string>
+    <string name="minutes_30">30 Minutos</string>
+    <string name="minutes_60">60 Minutos</string>
+    <string name="cancel">Cancelar</string>
+    <string name="about_text">Iglesia de dios nueva jerusalem la hermosa hechos 3;2 barrio la estancia salamá baja verapaz Guatemala\n\nDesarrollado por Andrés Turcios y su equipo NeoPunto correo ventas@neopunto.com</string>
 </resources>
