@@ -17,6 +17,7 @@
     <string name="equalizer">Equalizer</string>
     <string name="about">About</string>
     <string name="skip">Next</string>
+    <string name="media_artist">Iglesia Jerusalem Hermosa</string>
     <string name="sleep_timer_set">Sleep timer set for %d minutes</string>
     <string name="sleep_timer_cancelled">Sleep timer cancelled</string>
     <string name="minutes_15">15 Minutes</string>

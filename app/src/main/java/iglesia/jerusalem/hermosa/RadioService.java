@@ -30,17 +30,7 @@ public class RadioService extends MediaLibraryService {
         player = new ExoPlayer.Builder(this).build();
 
         // Prepare the stream immediately
-        String streamUrl = CryptoUtils.getStreamUrl();
-        MediaItem mediaItem = new MediaItem.Builder()
-                .setUri(streamUrl)
-                .setMediaId(streamUrl)
-                .setMediaMetadata(new MediaMetadata.Builder()
-                        .setTitle("Nueva Jerusalem")
-                        .setArtist("Iglesia Jerusalem Hermosa")
-                        .setIsBrowsable(false)
-                        .setIsPlayable(true)
-                        .build())
-                .build();
+        MediaItem mediaItem = createMediaItem();
 
         player.setMediaItem(mediaItem);
         player.prepare();
@@ -104,17 +94,7 @@ public class RadioService extends MediaLibraryService {
                 @Nullable LibraryParams params) {
 
             if ("root".equals(parentId)) {
-                 String streamUrl = CryptoUtils.getStreamUrl();
-                 MediaItem mediaItem = new MediaItem.Builder()
-                    .setUri(streamUrl)
-                    .setMediaId(streamUrl)
-                    .setMediaMetadata(new MediaMetadata.Builder()
-                            .setTitle("Nueva Jerusalem")
-                            .setArtist("Iglesia Jerusalem Hermosa")
-                            .setIsBrowsable(false)
-                            .setIsPlayable(true)
-                            .build())
-                    .build();
+                 MediaItem mediaItem = createMediaItem();
 
                  return Futures.immediateFuture(LibraryResult.ofItemList(
                          ImmutableList.of(mediaItem),
@@ -136,5 +116,19 @@ public class RadioService extends MediaLibraryService {
         }
 
         // Handle custom commands if needed, or just default behavior
+    }
+
+    private MediaItem createMediaItem() {
+        String streamUrl = CryptoUtils.getStreamUrl();
+        return new MediaItem.Builder()
+                .setUri(streamUrl)
+                .setMediaId(streamUrl)
+                .setMediaMetadata(new MediaMetadata.Builder()
+                        .setTitle(getString(R.string.app_name))
+                        .setArtist(getString(R.string.media_artist))
+                        .setIsBrowsable(false)
+                        .setIsPlayable(true)
+                        .build())
+                .build();
     }
 }
