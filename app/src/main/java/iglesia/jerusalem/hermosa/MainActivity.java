@@ -4,20 +4,29 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
@@ -27,28 +36,32 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaController mediaController;
     private ExtendedFloatingActionButton playPauseButton;
+    private FloatingActionButton skipButton;
     private TextView statusText;
     private ImageView logoImage;
     private ListenableFuture<MediaController> controllerFuture;
+    private CountDownTimer sleepTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         restoreTheme();
 
         setContentView(R.layout.activity_main);
 
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
+
         playPauseButton = findViewById(R.id.play_pause_button);
+        skipButton = findViewById(R.id.skip_button);
         statusText = findViewById(R.id.status_text);
         logoImage = findViewById(R.id.logo_image);
 
-        findViewById(R.id.settings_button).setOnClickListener(v -> {
-            startActivity(new Intent(this, SettingsActivity.class));
-        });
-
         playPauseButton.setOnClickListener(v -> {
+            animateButton(v);
             if (mediaController != null) {
                 if (mediaController.isPlaying()) {
                     mediaController.pause();
@@ -57,6 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                  initializeController();
+            }
+        });
+
+        skipButton.setOnClickListener(v -> {
+            animateButton(v);
+            if (mediaController != null) {
+                mediaController.stop();
+                mediaController.prepare();
+                mediaController.play();
             }
         });
     }
@@ -129,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 statusText.setText(R.string.pause);
                 stopAnim();
             } else {
-                statusText.setText(R.string.pause); // Or idle
+                statusText.setText(R.string.pause);
                 stopAnim();
             }
         }
@@ -148,5 +170,95 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopAnim() {
         logoImage.clearAnimation();
+    }
+
+    private void animateButton(View v) {
+        ScaleAnimation anim = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(100);
+        anim.setRepeatCount(1);
+        anim.setRepeatMode(Animation.REVERSE);
+        v.startAnimation(anim);
+    }
+
+    private boolean onMenuItemClick(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_car_mode) {
+            startActivity(new Intent(this, CarModeActivity.class));
+            return true;
+        } else if (id == R.id.action_sleep_timer) {
+            showSleepTimerDialog();
+            return true;
+        } else if (id == R.id.action_equalizer) {
+            openEqualizer();
+            return true;
+        } else if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        } else if (id == R.id.action_about) {
+            showAboutDialog();
+            return true;
+        }
+        return false;
+    }
+
+    private void openEqualizer() {
+        Intent intent = new Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+             startActivityForResult(intent, 0);
+        } else {
+            Toast.makeText(this, "No Equalizer found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showSleepTimerDialog() {
+        String[] options = {
+            getString(R.string.minutes_15),
+            getString(R.string.minutes_30),
+            getString(R.string.minutes_60),
+            getString(R.string.cancel)
+        };
+
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.sleep_timer)
+            .setItems(options, (dialog, which) -> {
+                if (which == 0) startTimer(15);
+                else if (which == 1) startTimer(30);
+                else if (which == 2) startTimer(60);
+                else cancelTimer();
+            })
+            .show();
+    }
+
+    private void startTimer(int minutes) {
+        if (sleepTimer != null) sleepTimer.cancel();
+        long millis = minutes * 60 * 1000L;
+        sleepTimer = new CountDownTimer(millis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {}
+
+            @Override
+            public void onFinish() {
+                if (mediaController != null) mediaController.pause();
+                sleepTimer = null;
+            }
+        }.start();
+        Toast.makeText(this, String.format(getString(R.string.sleep_timer_set), minutes), Toast.LENGTH_SHORT).show();
+    }
+
+    private void cancelTimer() {
+        if (sleepTimer != null) {
+            sleepTimer.cancel();
+            sleepTimer = null;
+            Toast.makeText(this, R.string.sleep_timer_cancelled, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showAboutDialog() {
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.about)
+            .setMessage(R.string.about_text)
+            .setPositiveButton(android.R.string.ok, null)
+            .show();
     }
 }

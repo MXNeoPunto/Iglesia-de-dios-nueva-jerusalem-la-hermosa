@@ -12,4 +12,16 @@
     <string name="light_mode">Light Mode</string>
     <string name="system_default">System Default</string>
     <string name="language_disclaimer">Warning: the language only changes the visual text of the application, this does not imply that the station changes.</string>
+    <string name="car_mode">Car Mode</string>
+    <string name="sleep_timer">Sleep Timer</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="about">About</string>
+    <string name="skip">Next</string>
+    <string name="sleep_timer_set">Sleep timer set for %d minutes</string>
+    <string name="sleep_timer_cancelled">Sleep timer cancelled</string>
+    <string name="minutes_15">15 Minutes</string>
+    <string name="minutes_30">30 Minutes</string>
+    <string name="minutes_60">60 Minutes</string>
+    <string name="cancel">Cancel</string>
+    <string name="about_text">Iglesia de dios nueva jerusalem la hermosa hechos 3;2 barrio la estancia salamá baja verapaz Guatemala\n\nDeveloped by Andrés Turcios and his team NeoPunto email ventas@neopunto.com</string>
 </resources>
