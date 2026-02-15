@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         toolbar.setNavigationOnClickListener(v -> showMenuBottomSheet());
-        toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
 
         playPauseButton = findViewById(R.id.play_pause_button);
         timerButton = findViewById(R.id.timer_button);
@@ -217,27 +216,6 @@ public class MainActivity extends AppCompatActivity {
         anim.setRepeatCount(1);
         anim.setRepeatMode(Animation.REVERSE);
         v.startAnimation(anim);
-    }
-
-    private boolean onMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_car_mode) {
-            startActivity(new Intent(this, CarModeActivity.class));
-            return true;
-        } else if (id == R.id.action_sleep_timer) {
-            showSleepTimerDialog();
-            return true;
-        } else if (id == R.id.action_equalizer) {
-            openEqualizer();
-            return true;
-        } else if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        } else if (id == R.id.action_about) {
-            showAboutDialog();
-            return true;
-        }
-        return false;
     }
 
     private void showMenuBottomSheet() {
