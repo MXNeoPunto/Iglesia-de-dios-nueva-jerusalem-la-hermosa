@@ -1,9 +1,12 @@
 package iglesia.jerusalem.hermosa;
 
 import android.content.ComponentName;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -25,6 +28,8 @@ import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -36,9 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaController mediaController;
     private ExtendedFloatingActionButton playPauseButton;
+    private MaterialButton timerButton;
+    private MaterialButton carModeButton;
     private TextView statusText;
     private TextView timerText;
     private ImageView logoImage;
+    private View gradientBackground;
     private ListenableFuture<MediaController> controllerFuture;
     private CountDownTimer sleepTimer;
 
@@ -52,19 +60,29 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_root), (v, insets) -> {
+        gradientBackground = findViewById(R.id.gradient_background);
+        animateGradient();
+
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_container), (v, insets) -> {
             androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationOnClickListener(v -> showMenuBottomSheet());
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
 
         playPauseButton = findViewById(R.id.play_pause_button);
+        timerButton = findViewById(R.id.timer_button);
+        carModeButton = findViewById(R.id.car_mode_button);
         statusText = findViewById(R.id.status_text);
         timerText = findViewById(R.id.timer_text);
         logoImage = findViewById(R.id.logo_image);
+
+        timerButton.setOnClickListener(v -> showSleepTimerDialog());
+        carModeButton.setOnClickListener(v -> startActivity(new Intent(this, CarModeActivity.class)));
 
         playPauseButton.setOnClickListener(v -> {
             animateButton(v);
@@ -169,6 +187,29 @@ public class MainActivity extends AppCompatActivity {
         logoImage.clearAnimation();
     }
 
+    private void animateGradient() {
+        int colorStart = Color.parseColor("#4B0082"); // Indigo
+        int colorEnd = Color.parseColor("#000033"); // Dark Blue
+        int colorBottom = Color.parseColor("#000000"); // Black
+
+        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {colorStart, colorBottom});
+
+        gradientBackground.setBackground(gd);
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorStart, colorEnd);
+        colorAnimation.setDuration(5000); // 5 seconds
+        colorAnimation.setRepeatCount(ValueAnimator.INFINITE);
+        colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnimation.addUpdateListener(animator -> {
+            if (gradientBackground != null) {
+                gd.setColors(new int[] {(int) animator.getAnimatedValue(), colorBottom});
+            }
+        });
+        colorAnimation.start();
+    }
+
     private void animateButton(View v) {
         ScaleAnimation anim = new ScaleAnimation(1.0f, 0.9f, 1.0f, 0.9f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -197,6 +238,27 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void showMenuBottomSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_menu, null);
+        bottomSheetDialog.setContentView(view);
+
+        view.findViewById(R.id.btn_menu_equalizer).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            openEqualizer();
+        });
+        view.findViewById(R.id.btn_menu_settings).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            startActivity(new Intent(this, SettingsActivity.class));
+        });
+        view.findViewById(R.id.btn_menu_about).setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            showAboutDialog();
+        });
+
+        bottomSheetDialog.show();
     }
 
     private void openEqualizer() {
