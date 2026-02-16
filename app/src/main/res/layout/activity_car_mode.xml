@@ -4,50 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".CarModeActivity">
 
-    <!-- Close Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/close_button"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:icon="@drawable/ic_close"
-        app:iconSize="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Status Text (Large) -->
-    <TextView
-        android:id="@+id/status_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loading"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/play_pause_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/close_button"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <!-- Play/Pause Button (Huge) -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/play_pause_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/play"
-        android:textSize="24sp"
-        android:padding="24dp"
-        app:icon="@drawable/ic_play"
-        app:iconSize="48dp"
+    <!-- Background Layer -->
+    <View
+        android:id="@+id/gradient_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/md_theme_light_primaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status_text" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Content Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- Close Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/close_button"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:icon="@drawable/ic_close"
+            app:iconSize="32dp"
+            app:iconTint="@android:color/white"
+            app:rippleColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Status Text (Large) -->
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@+id/play_pause_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/close_button"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <!-- Play/Pause Button (Huge) -->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/play_pause_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/play"
+            android:textSize="24sp"
+            android:padding="24dp"
+            app:icon="@drawable/ic_play"
+            app:iconSize="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/status_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
