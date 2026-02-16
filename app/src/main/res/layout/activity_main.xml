@@ -104,8 +104,7 @@
         android:layout_marginEnd="16dp"
             app:icon="@drawable/ic_timer"
         app:iconSize="32dp"
-        app:iconTint="@android:color/white"
-        app:rippleColor="@android:color/white"
+        app:iconTint="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@+id/play_pause_button"
             app:layout_constraintEnd_toStartOf="@+id/play_pause_button"
             app:layout_constraintTop_toTopOf="@+id/play_pause_button" />
@@ -119,8 +118,7 @@
         android:layout_marginStart="16dp"
             app:icon="@drawable/ic_car_mode"
         app:iconSize="32dp"
-        app:iconTint="@android:color/white"
-        app:rippleColor="@android:color/white"
+        app:iconTint="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@+id/play_pause_button"
             app:layout_constraintStart_toEndOf="@+id/play_pause_button"
             app:layout_constraintTop_toTopOf="@+id/play_pause_button" />

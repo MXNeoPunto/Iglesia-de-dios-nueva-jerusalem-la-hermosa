@@ -1,5 +1,6 @@
 package iglesia.jerusalem.hermosa;
 
+import android.content.res.Configuration;
 import android.content.ComponentName;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +35,14 @@ public class CarModeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_mode);
 
         View gradientBackground = findViewById(R.id.gradient_background);
-        GradientAnimationHelper.animateGradient(gradientBackground);
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            gradientBackground.setVisibility(View.VISIBLE);
+            GradientAnimationHelper.animateGradient(gradientBackground);
+        } else {
+            gradientBackground.setVisibility(View.GONE);
+        }
 
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_container), (v, insets) -> {
             androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
