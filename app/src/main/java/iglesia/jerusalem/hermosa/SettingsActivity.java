@@ -27,7 +27,10 @@ public class SettingsActivity extends AppCompatActivity {
         androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_settings);
 
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+        View gradientBackground = findViewById(R.id.gradient_background);
+        GradientAnimationHelper.animateGradient(gradientBackground);
+
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_container), (v, insets) -> {
             androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

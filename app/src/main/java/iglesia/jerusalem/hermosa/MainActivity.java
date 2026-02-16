@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gradientBackground = findViewById(R.id.gradient_background);
-        animateGradient();
+        GradientAnimationHelper.animateGradient(gradientBackground);
 
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.content_container), (v, insets) -> {
             androidx.core.graphics.Insets systemBars = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars());
@@ -184,29 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopAnim() {
         logoImage.clearAnimation();
-    }
-
-    private void animateGradient() {
-        int colorStart = Color.parseColor("#4B0082"); // Indigo
-        int colorEnd = Color.parseColor("#000033"); // Dark Blue
-        int colorBottom = Color.parseColor("#000000"); // Black
-
-        android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable(
-                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[] {colorStart, colorBottom});
-
-        gradientBackground.setBackground(gd);
-
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorStart, colorEnd);
-        colorAnimation.setDuration(5000); // 5 seconds
-        colorAnimation.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimation.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimation.addUpdateListener(animator -> {
-            if (gradientBackground != null) {
-                gd.setColors(new int[] {(int) animator.getAnimatedValue(), colorBottom});
-            }
-        });
-        colorAnimation.start();
     }
 
     private void animateButton(View v) {

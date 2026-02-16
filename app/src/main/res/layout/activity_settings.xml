@@ -1,66 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".SettingsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/theme"
-        android:textAppearance="?attr/textAppearanceTitleMedium"
-        android:layout_marginBottom="8dp"/>
+    <!-- Background Layer -->
+    <View
+        android:id="@+id/gradient_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/md_theme_light_primaryContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/theme_toggle_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:selectionRequired="true"
-        android:layout_marginBottom="24dp">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_light"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/light_mode"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_dark"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dark_mode"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_system"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/system_default"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/language"
-        android:textAppearance="?attr/textAppearanceTitleMedium"
-        android:layout_marginBottom="8dp"/>
-
-    <Spinner
-        android:id="@+id/language_spinner"
+    <!-- Content Container -->
+    <LinearLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/language_disclaimer"
-        android:textAppearance="?attr/textAppearanceBodySmall"
-        android:textColor="?android:attr/textColorSecondary"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/theme"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp"/>
 
-</LinearLayout>
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/theme_toggle_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            android:layout_marginBottom="24dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_light"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/light_mode"
+                android:textColor="@android:color/white"
+                app:strokeColor="@android:color/white"
+                app:rippleColor="@android:color/white"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dark"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dark_mode"
+                android:textColor="@android:color/white"
+                app:strokeColor="@android:color/white"
+                app:rippleColor="@android:color/white"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_system"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/system_default"
+                android:textColor="@android:color/white"
+                app:strokeColor="@android:color/white"
+                app:rippleColor="@android:color/white"/>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/language"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/language_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginBottom="8dp"
+            android:theme="@style/ThemeOverlay.Material3.Dark"
+            android:backgroundTint="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/language_disclaimer"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="#B3FFFFFF"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
