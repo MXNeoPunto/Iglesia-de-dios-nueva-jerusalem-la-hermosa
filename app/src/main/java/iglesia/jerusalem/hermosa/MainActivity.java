@@ -11,10 +11,14 @@ import android.graphics.Color;
 import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private ListenableFuture<MediaController> controllerFuture;
     private CountDownTimer sleepTimer;
 
+    // AdMob Components
+    private FrameLayout adContainer;
+    private TextView adFreeTimer;
+    private Handler adHandler = new Handler(Looper.getMainLooper());
+    private Runnable adRunnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
@@ -58,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         restoreTheme();
+
+        // Initialize Ads
+        AdManager.getInstance().initialize(this);
 
         setContentView(R.layout.activity_main);
 
@@ -88,8 +101,17 @@ public class MainActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer_text);
         logoImage = findViewById(R.id.logo_image);
 
+        adContainer = findViewById(R.id.ad_container);
+        adFreeTimer = findViewById(R.id.ad_free_timer);
+
         timerButton.setOnClickListener(v -> showSleepTimerDialog());
-        carModeButton.setOnClickListener(v -> startActivity(new Intent(this, CarModeActivity.class)));
+        carModeButton.setOnClickListener(v -> {
+            if (AdManager.getInstance().isFeatureUnlocked(this, "car_mode")) {
+                startActivity(new Intent(this, CarModeActivity.class));
+            } else {
+                handleLockedFeature("car_mode", () -> startActivity(new Intent(this, CarModeActivity.class)));
+            }
+        });
 
         playPauseButton.setOnClickListener(v -> {
             animateButton(v);
@@ -103,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
                  initializeController();
             }
         });
+
+        // Initial Banner Load
+        AdManager.getInstance().loadBanner(this, adContainer);
+        startAdFreeTimer();
+        checkRateApp();
     }
 
     private void restoreTheme() {
@@ -115,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initializeController();
+        startAdFreeTimer(); // Ensure timer resumes if returning
     }
 
     @Override
@@ -125,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             controllerFuture = null;
         }
         mediaController = null;
+        if (adRunnable != null) adHandler.removeCallbacks(adRunnable);
     }
 
     private void initializeController() {
@@ -210,7 +239,11 @@ public class MainActivity extends AppCompatActivity {
 
         view.findViewById(R.id.btn_menu_equalizer).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
-            openEqualizer();
+            if (AdManager.getInstance().isFeatureUnlocked(this, "equalizer")) {
+                openEqualizer();
+            } else {
+                handleLockedFeature("equalizer", this::openEqualizer);
+            }
         });
         view.findViewById(R.id.btn_menu_settings).setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
@@ -222,6 +255,76 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomSheetDialog.show();
+    }
+
+    private void handleLockedFeature(String feature, Runnable onSuccess) {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.feature_locked_title)
+            .setMessage(R.string.feature_locked_message)
+            .setPositiveButton(R.string.watch_ad, (dialog, which) -> {
+                AdManager.getInstance().showRewardedAd(this, feature, () -> {
+                    if (onSuccess != null) onSuccess.run();
+                    AdManager.getInstance().loadBanner(this, adContainer); // Update banner state
+                    startAdFreeTimer(); // Reset timer visual
+                });
+            })
+            .setNegativeButton(R.string.cancel, null)
+            .show();
+    }
+
+    private void startAdFreeTimer() {
+        if (adRunnable != null) adHandler.removeCallbacks(adRunnable);
+
+        adRunnable = new Runnable() {
+            @Override
+            public void run() {
+                long remaining = AdManager.getInstance().getAdFreeRemainingTime(MainActivity.this);
+                if (remaining > 0) {
+                    adFreeTimer.setVisibility(View.VISIBLE);
+                    long minutes = (remaining / 1000) / 60;
+                    long seconds = (remaining / 1000) % 60;
+                    adFreeTimer.setText(String.format(java.util.Locale.getDefault(), getString(R.string.ad_free_timer_format), minutes, seconds));
+                    adContainer.setVisibility(View.GONE);
+                    adHandler.postDelayed(this, 1000);
+                } else {
+                    adFreeTimer.setVisibility(View.GONE);
+                    if (adContainer.getVisibility() == View.GONE) {
+                         // Timer just expired, reload banner
+                         AdManager.getInstance().loadBanner(MainActivity.this, adContainer);
+                    }
+                }
+            }
+        };
+        adHandler.post(adRunnable);
+    }
+
+    private void checkRateApp() {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        boolean dontShow = prefs.getBoolean("dont_show_rate", false);
+        if (dontShow) return;
+
+        long lastShown = prefs.getLong("last_rate_shown", 0);
+        // 48 hours = 48 * 60 * 60 * 1000
+        if (System.currentTimeMillis() - lastShown < 48 * 60 * 60 * 1000L) return;
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.rate_title)
+            .setMessage(R.string.rate_message)
+            .setPositiveButton(R.string.rate_now, (dialog, which) -> {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("market://details?id=" + getPackageName())));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                }
+                prefs.edit().putBoolean("dont_show_rate", true).apply();
+            })
+            .setNeutralButton(R.string.rate_later, (dialog, which) -> {
+                prefs.edit().putLong("last_rate_shown", System.currentTimeMillis()).apply();
+            })
+            .setNegativeButton(R.string.rate_never, (dialog, which) -> {
+                prefs.edit().putBoolean("dont_show_rate", true).apply();
+            })
+            .show();
     }
 
     private void openEqualizer() {
