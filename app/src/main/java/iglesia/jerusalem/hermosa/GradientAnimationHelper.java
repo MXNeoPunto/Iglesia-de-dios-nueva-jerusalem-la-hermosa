@@ -11,8 +11,8 @@ public class GradientAnimationHelper {
     public static void animateGradient(View gradientBackground) {
         if (gradientBackground == null) return;
 
-        int colorStart = Color.parseColor("#4B0082"); // Indigo
-        int colorEnd = Color.parseColor("#000033"); // Dark Blue
+        int colorStart = Color.parseColor("#DAA520"); // Goldenrod
+        int colorEnd = Color.parseColor("#B8860B"); // Dark Goldenrod
         int colorBottom = Color.parseColor("#000000"); // Black
 
         GradientDrawable gd = new GradientDrawable(

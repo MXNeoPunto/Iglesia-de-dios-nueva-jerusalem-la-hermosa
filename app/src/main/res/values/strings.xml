@@ -33,4 +33,21 @@
     <string name="eq_worship">Modo Adoración</string>
     <string name="contact">Contactar</string>
     <string name="equalizer_mode">Modo Ecualizador</string>
+
+    <!-- Rate App -->
+    <string name="rate_title">Califícanos</string>
+    <string name="rate_message">Si disfrutas usar nuestra app, por favor tómate un momento para calificarla. ¡Gracias por tu apoyo!</string>
+    <string name="rate_now">Calificar Ahora</string>
+    <string name="rate_later">Más tarde</string>
+    <string name="rate_never">Nunca</string>
+    <string name="rate_thanks">¡Gracias por calificar!</string>
+
+    <!-- Ads / Unlocking -->
+    <string name="feature_locked_title">Función Bloqueada</string>
+    <string name="feature_locked_message">Mira un anuncio para desbloquear esta función y disfrutar de 30 minutos sin anuncios! (Máx 5/día)</string>
+    <string name="watch_ad">Ver Anuncio</string>
+    <string name="ad_limit_reached">Límite de anuncios alcanzado (5/día) o espera 15s</string>
+    <string name="feature_unlocked">¡Función Desbloqueada + 30m Sin Anuncios!</string>
+    <string name="ad_loading">Cargando anuncio... intenta de nuevo</string>
+    <string name="ad_free_timer_format">Sin Anuncios: %1$02d:%2$02d</string>
 </resources>
