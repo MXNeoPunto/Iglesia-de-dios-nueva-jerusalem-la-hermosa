@@ -1,4 +1,4 @@
-package iglesia.jerusalem.hermosa;
+package calculadora.iva.gt;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 public class CryptoUtilsTest {
     @Test
     public void testDecryption() {
-        String expectedUrl = "https://app0102.sonicpanelradio.com/8070/stream";
+        String expectedUrl = "http://edmenstudio.net:8001/;";
         String decryptedUrl = CryptoUtils.getStreamUrl();
         assertEquals(expectedUrl, decryptedUrl);
     }

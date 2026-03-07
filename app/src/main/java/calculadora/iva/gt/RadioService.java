@@ -1,4 +1,4 @@
-package iglesia.jerusalem.hermosa;
+package calculadora.iva.gt;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -38,8 +38,8 @@ public class RadioService extends MediaLibraryService {
                 .setUri(streamUrl)
                 .setMediaId(streamUrl)
                 .setMediaMetadata(new MediaMetadata.Builder()
-                        .setTitle("Nueva Jerusalem")
-                        .setArtist("Iglesia Jerusalem Hermosa")
+                        .setTitle("Radio Dios de Pacto")
+                        .setArtist("Radio Dios de Pacto")
                         .setIsBrowsable(false)
                         .setIsPlayable(true)
                         .build())
@@ -65,6 +65,7 @@ public class RadioService extends MediaLibraryService {
         prefs.registerOnSharedPreferenceChangeListener(prefsListener);
 
         player.addListener(new Player.Listener() {
+            @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
             @Override
             public void onAudioSessionIdChanged(int audioSessionId) {
                 if (audioSessionId != androidx.media3.common.C.AUDIO_SESSION_ID_UNSET) {
@@ -200,8 +201,8 @@ public class RadioService extends MediaLibraryService {
                     .setUri(streamUrl)
                     .setMediaId(streamUrl)
                     .setMediaMetadata(new MediaMetadata.Builder()
-                            .setTitle("Nueva Jerusalem")
-                            .setArtist("Iglesia Jerusalem Hermosa")
+                            .setTitle("Radio Dios de Pacto")
+                            .setArtist("Radio Dios de Pacto")
                             .setIsBrowsable(false)
                             .setIsPlayable(true)
                             .build())
