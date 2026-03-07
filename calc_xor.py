@@ -13,8 +13,8 @@ def xor_string(input_str, key):
 
     return xor_bytes
 
-url = "https://app0102.sonicpanelradio.com/8070/stream"
-key = "NuevaJerusalemKey"
+url = "http://edmenstudio.net:8001/;"
+key = "kor"
 
 xor_res = xor_string(url, key)
 encoded_res = base64.b64encode(xor_res).decode('utf-8')

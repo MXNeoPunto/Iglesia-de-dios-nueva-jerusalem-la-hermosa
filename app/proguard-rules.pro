@@ -1,1 +1,1 @@
--keep class iglesia.jerusalem.hermosa.** { *; }
+-keep class calculadora.iva.gt.** { *; }

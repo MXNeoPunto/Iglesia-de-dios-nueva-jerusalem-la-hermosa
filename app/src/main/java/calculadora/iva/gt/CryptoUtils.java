@@ -1,14 +1,14 @@
-package iglesia.jerusalem.hermosa;
+package calculadora.iva.gt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class CryptoUtils {
 
-    // Encrypted URL: "https://app0102.sonicpanelradio.com/8070/stream"
-    // Key: "NuevaJerusalemKey"
-    private static final String KEY = "NuevaJerusalemKey";
-    private static final String ENCRYPTED_URL = "JgERBhJwSl0UAxFcVF15SwohGwwVESsLFxkBAAgMAmUGFiNaXUZWekoBAQEEDQg=";
+    // Encrypted URL: "http://edmenstudio.net:8001/;"
+    // Key: "kor"
+    private static final String KEY = "kor";
+    private static final String ENCRYPTED_URL = "AxsGG1VdRAoWBgocGBsHDwYdRQEXH1VKW19DRFQ=";
 
     public static String getStreamUrl() {
         return decrypt(ENCRYPTED_URL, KEY);

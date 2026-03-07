@@ -1,4 +1,4 @@
-package iglesia.jerusalem.hermosa;
+package calculadora.iva.gt;
 
 import android.content.res.Configuration;
 import android.content.ComponentName;
